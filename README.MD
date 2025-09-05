@@ -3,7 +3,8 @@
 A clean, minimal GUI for downloading YouTube videos using `yt-dlp` with drag & drop support and real-time progress tracking.
 ## Download
 
-- Latest macOS build: see GitHub Releases → `YouTubeDownloader.dmg` (add link when published)
+- Latest macOS build (DMG): https://github.com/ValentinNM/simple-ytb-downloader/releases/latest/download/YouTubeDownloader.dmg
+- v1.0.0 (DMG): https://github.com/ValentinNM/simple-ytb-downloader/releases/download/v1.0.0/YouTubeDownloader.dmg
 
 
 ## Features
@@ -148,7 +149,7 @@ create-dmg --volname "YouTubeDownloader" --window-size 500 300 \
 
 Then attach the DMG to a GitHub Release. In this README, add a link like:
 
-- Latest macOS build: see Releases → `YouTubeDownloader.dmg`
+- Latest macOS build (DMG): https://github.com/ValentinNM/simple-ytb-downloader/releases/latest/download/YouTubeDownloader.dmg
 
 Tip: If you don’t have `create-dmg`, you can also distribute the `.app` or the single-file binary directly. The DMG is preferred for a smoother UX.
 
