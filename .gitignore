@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+.nox/
+.tox/
+
+# Pipenv
+Pipfile.lock
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# PyInstaller build artifacts
+build/
+dist/
+
+# Logs
+*.log
+
+# Local settings
+*.local.*
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Packaging outputs
+*.dmg
+*.pkg
