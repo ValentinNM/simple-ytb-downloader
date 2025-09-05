@@ -150,6 +150,7 @@ create-dmg --volname "YouTubeDownloader" --window-size 500 300 \
 Then attach the DMG to a GitHub Release. In this README, add a link like:
 
 - Latest macOS build (DMG): https://github.com/ValentinNM/simple-ytb-downloader/releases/latest/download/YouTubeDownloader.dmg
+- v1.0.1 (DMG): https://github.com/ValentinNM/simple-ytb-downloader/releases/download/v1.0.1/YouTubeDownloader.dmg
 
 Tip: If you don’t have `create-dmg`, you can also distribute the `.app` or the single-file binary directly. The DMG is preferred for a smoother UX.
 
