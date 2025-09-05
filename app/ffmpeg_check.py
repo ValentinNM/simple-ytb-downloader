@@ -16,12 +16,33 @@ from .config import FFMPEG_CHECK_TIMEOUT_SEC
 
 
 def resolve_bundled_tool(name: str) -> Optional[str]:
+    """Return absolute path to a bundled tool inside PyInstaller builds.
+
+    Search order:
+    1) sys._MEIPASS (one-file extracted temp dir)
+    2) Directory of sys.executable (one-folder and macOS .app → Contents/MacOS)
+    3) Parent of executable dir (fallback)
+    """
+    # 1) One-file temp extraction dir
     try:
         base = getattr(sys, "_MEIPASS", None)
         if base:
             candidate = Path(base) / name
             if candidate.exists():
                 return str(candidate)
+    except Exception:
+        pass
+    # 2) Next to the executable (one-folder and .app bundles)
+    try:
+        exe_dir = Path(sys.executable).resolve().parent
+        for p in [exe_dir / name, exe_dir / "bin" / name]:
+            if p.exists():
+                return str(p)
+        # 3) Parent dir fallback (rare edge cases)
+        parent = exe_dir.parent
+        for p in [parent / name, parent / "bin" / name, parent / 'Resources' / 'fftools' / name]:
+            if p.exists():
+                return str(p)
     except Exception:
         pass
     return None

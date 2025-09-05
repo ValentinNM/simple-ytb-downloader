@@ -2,6 +2,7 @@
 from PyInstaller.utils.hooks import collect_all
 import shutil
 import sys
+from pathlib import Path
 
 datas = []
 binaries = []
@@ -16,19 +17,31 @@ try:
 except Exception:
     pass
 
-# Enforce bundling ffmpeg/ffprobe: fail the build if not found
-missing_tools = []
-for tool in ("ffmpeg", "ffprobe"):
-    path = shutil.which(tool)
-    if not path:
-        missing_tools.append(tool)
-    else:
-        binaries.append((path, tool))
+# Prefer vendored ffmpeg/ffprobe under vendor/ffmpeg/macos; fallback to PATH
+# __file__ is not defined when executing specs via pyinstaller - use current working dir
+root_dir = Path('.').resolve()
+vend_ffmpeg = root_dir / 'vendor' / 'ffmpeg' / 'macos' / 'ffmpeg'
+vend_ffprobe = root_dir / 'vendor' / 'ffmpeg' / 'macos' / 'ffprobe'
 
-if missing_tools:
-    sys.stderr.write(f"\nERROR: Missing required tools for bundling: {', '.join(missing_tools)}.\n"
-                     f"Please install via Homebrew (e.g., 'brew install ffmpeg') and re-run.\n")
+resolved = {}
+for tool, vend in (('ffmpeg', vend_ffmpeg), ('ffprobe', vend_ffprobe)):
+    if vend.exists():
+        resolved[tool] = str(vend)
+    else:
+        path = shutil.which(tool)
+        if path:
+            resolved[tool] = path
+
+missing = [t for t in ('ffmpeg', 'ffprobe') if t not in resolved]
+if missing:
+    sys.stderr.write(f"\nERROR: Missing required tools for bundling: {', '.join(missing)}.\n"
+                     f"Provide vendor binaries under vendor/ffmpeg/macos/ or install via Homebrew, then re-run.\n")
     raise SystemExit(2)
+
+# Place binaries next to the executable within the bundle
+# Prefer packaging ffmpeg/ffprobe as datas under Resources/fftools
+for tool in ('ffmpeg', 'ffprobe'):
+    datas.append((resolved[tool], 'fftools'))
 
 
 a = Analysis(
